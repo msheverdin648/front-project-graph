@@ -1,7 +1,11 @@
 import React, { useMemo, useState } from 'react'
-import Graph, {getSeed} from "react-graph-vis";
+import Graph from "react-graph-vis";
 
 const MyGraph = ({data, rootElement}) => {
+
+
+    const [graph, setGraph] = useState({})
+    const [graphIsCreated, setGraphIsCreated] = useState(false)
 
     const options = {
         layout: {
@@ -17,14 +21,15 @@ const MyGraph = ({data, rootElement}) => {
 
         },
         edges: {
-            color: "#fff",
+            color: graphIsCreated ? "#fff" : 'transparent',
             width: 2,
             length: 400,  
             font: {
                 align: 'middle',
                 size: 18,
-                background: '#29292E',
-                color: '#fff'
+                background: graphIsCreated ? "#29292E" : 'transparent',
+                color: graphIsCreated ? "#fff" : 'transparent',
+                strokeWidth: 0,
             },
             widthConstraint: {
                 maximum: 200
@@ -40,9 +45,9 @@ const MyGraph = ({data, rootElement}) => {
             font: {
                 align: 'center',
                 size: 24,
-                color: '#fff'
+                color: graphIsCreated ? "#fff" : 'transparent'
             },
-            color: '#1CAE84',
+            color: graphIsCreated ? "#1CAE84" : 'transparent',
             
         },
         interaction: {
@@ -66,11 +71,11 @@ const MyGraph = ({data, rootElement}) => {
       const createGraphData = (data, rootElement) => {
         const dependent = data.filter(el => el.object === rootElement && el.object !== el.dependentObject )
         const nodes_list = []
+        nodes_list.push(...dependent)
         dependent.forEach(el=>{
           nodes_list.push(...createGraphData(data, el.dependentObject))
           return nodes_list
         })
-        nodes_list.push(...dependent)
         return nodes_list
       }
 
@@ -100,23 +105,30 @@ const MyGraph = ({data, rootElement}) => {
             }
         })
       }
-
-      const [graph, setGraph] = useState({})
-      
-
       const graphData = createGraphData(data, rootElement)
       const nodes = getNodesList(graphData) 
       const edges = getEdgesList(graphData)
-      useMemo(() => setGraph({
-
-        nodes: nodes,
-        edges: edges
-      }
-      ), [])
+      
+      useMemo(() => {
+        setGraph({
+          nodes: nodes,
+          edges: edges
+        })
+        setTimeout(()=>{console.log(123) 
+          setGraphIsCreated(true)}, 3000)
+      }, [])
 
 
         return (
     <div style={{background: '#29292E', width: '100%', height: '100%'}}>
+      {
+        graphIsCreated
+        ? null
+        : 
+         <h1 style={{color: '#fff'}}>
+          Загрузка
+         </h1>
+      }
          <Graph
       graph={graph}
       options={options}

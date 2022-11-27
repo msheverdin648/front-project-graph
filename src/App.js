@@ -4,7 +4,7 @@ import './styles/App.css'
 
 const App = () => {
   
-  const [data, setData] = useState(
+  const [data] = useState(
       [
         {"object":"инсулин","linkType":"повышает","dependentObject":"сахар"},
         {"object":"сахар","linkType":"повышает","dependentObject":"что-то"},
