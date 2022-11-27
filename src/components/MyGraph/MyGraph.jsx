@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import classes from './MyGraph.module.css'
 import Graph from "react-graph-vis";
 
-const MyGraph = ({data, rootElement}) => {
+const MyGraph = ({data, rootElement, height, width }) => {
 
 
     const [graph, setGraph] = useState({})
@@ -58,7 +58,8 @@ const MyGraph = ({data, rootElement}) => {
           },         
           timestep: 3,
         },
-        
+        height: height,
+        width: width
       };
 
     const events = {
@@ -118,7 +119,7 @@ const MyGraph = ({data, rootElement}) => {
 
 
         return (
-    <div className={classes.container}>
+    <div className={classes.container} style={{width: width, height: height}}>
       {
         graphIsCreated
         ? null
