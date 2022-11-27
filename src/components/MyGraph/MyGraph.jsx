@@ -6,7 +6,7 @@ const MyGraph = ({data, rootElement}) => {
 
 
     const [graph, setGraph] = useState({})
-    const [graphIsCreated, setGraphIsCreated] = useState(true)
+    const [graphIsCreated, setGraphIsCreated] = useState(false)
 
     const options = {
         layout: {
