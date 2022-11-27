@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import classes from './MyGraph.module.css'
 import Graph from "react-graph-vis";
 
 const MyGraph = ({data, rootElement}) => {
@@ -60,8 +61,7 @@ const MyGraph = ({data, rootElement}) => {
             gravitationalConstant: -50000,
           },         
         },
-        height: '100%',
-        width: '100%',
+        
       };
 
      
@@ -114,13 +114,14 @@ const MyGraph = ({data, rootElement}) => {
           nodes: nodes,
           edges: edges
         })
-        setTimeout(()=>{console.log(123) 
+        setTimeout(()=>{
           setGraphIsCreated(true)}, 3000)
       }, [])
+      
 
 
         return (
-    <div style={{background: '#29292E', width: '100%', height: '100%'}}>
+    <div className={classes.container}>
       {
         graphIsCreated
         ? null
@@ -130,9 +131,9 @@ const MyGraph = ({data, rootElement}) => {
          </h1>
       }
          <Graph
-      graph={graph}
-      options={options}
-    />
+          graph={graph}
+          options={options}
+        />
     </div>
   )
 }

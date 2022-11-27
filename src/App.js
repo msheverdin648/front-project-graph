@@ -21,7 +21,9 @@ const App = () => {
 
   return (
     <div className='App'>
-      <MyGraph data={data} rootElement='инсулин' />
+      <div className="container">
+        <MyGraph data={data} rootElement='инсулин' />
+      </div>
     </div>
   );
 
