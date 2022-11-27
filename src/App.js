@@ -21,7 +21,7 @@ const App = () => {
 
   return (
     <div className='App'>
-      <MyGraph data={data} height={'700px'} width={'100%'} rootElement='инсулин' />
+      <MyGraph data={data} height={'600px'} width={'600px'} rootElement='инсулин' />
     </div>
   );
 

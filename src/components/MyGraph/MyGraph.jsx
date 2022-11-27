@@ -6,9 +6,10 @@ const MyGraph = ({data, rootElement, height, width }) => {
 
 
     const [graph, setGraph] = useState({})
-    const [graphIsCreated, setGraphIsCreated] = useState(false)
+    const [graphIsCreated, setGraphIsCreated] = useState(true)
 
     const options = {
+      autoResize: false,
         layout: {
           hierarchical: {
             enabled: false,
@@ -80,20 +81,19 @@ const MyGraph = ({data, rootElement, height, width }) => {
       }
 
       //  Создает список узлов
-      const getNodesList = (data) => {
+      const getNodesList = (data, rootElement) => {
         const objectList = data.map(el => {
             return el.object
         })
-
         const dependentObjectsList = data.map(el => {
             return el.dependentObject
         })
-
         const nodes = Array.from(new Set(objectList.concat(dependentObjectsList)))
         
-        return nodes.map((el, index) => {
+        const result = nodes.map((el, index) => {
             return { id: el, label: el }
         })
+        return result.length === 0 ? [{ id: rootElement, label: rootElement }] : result
       }
 
 
@@ -106,7 +106,7 @@ const MyGraph = ({data, rootElement, height, width }) => {
         })
       }
       const graphData = createGraphData(data, rootElement)
-      const nodes = getNodesList(graphData) 
+      const nodes = getNodesList(graphData, rootElement) 
       const edges = getEdgesList(graphData)
       
       useMemo(() => {
