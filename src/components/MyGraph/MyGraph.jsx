@@ -38,6 +38,7 @@ const MyGraph = ({data, rootElement}) => {
                 minimum: 100,
                 maximum: 200
             },
+            margin: 10,
             font: {
                 align: 'center',
                 size: 24,
@@ -122,7 +123,7 @@ const MyGraph = ({data, rootElement}) => {
         graphIsCreated
         ? null
         : 
-         <h1 style={{color: '#fff'}}>
+         <h1 className={classes.loading}>
           Загрузка
          </h1>
       }
