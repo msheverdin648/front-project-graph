@@ -6,17 +6,12 @@ const MyGraph = ({data, rootElement}) => {
 
 
     const [graph, setGraph] = useState({})
-    const [graphIsCreated, setGraphIsCreated] = useState(false)
+    const [graphIsCreated, setGraphIsCreated] = useState(true)
 
     const options = {
         layout: {
           hierarchical: {
             enabled: false,
-            // nodeSpacing: 400,
-            // levelSeparation: 400,
-            // parentCentralization: true,
-            // blockShifting: true,
-            // improvedLayout: false
           },
           randomSeed: 2
 
@@ -60,6 +55,7 @@ const MyGraph = ({data, rootElement}) => {
             centralGravity: 0,
             gravitationalConstant: -50000,
           },         
+          timestep: 3,
         },
         
       };
