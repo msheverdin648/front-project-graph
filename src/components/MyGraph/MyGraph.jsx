@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import Graph, {getSeed} from "react-graph-vis";
 
-const MyGraph = ({data}) => {
+const MyGraph = ({data, rootElement}) => {
 
     const options = {
         layout: {
-          // hierarchical: false,
           hierarchical: {
             enabled: false,
             // nodeSpacing: 400,
@@ -14,20 +13,20 @@ const MyGraph = ({data}) => {
             // blockShifting: true,
             // improvedLayout: false
           },
-          randomSeed: 1
+          randomSeed: 2
 
         },
         edges: {
-            color: "#000000",
+            color: "#fff",
             width: 2,
             length: 400,  
             font: {
                 align: 'middle',
                 size: 18,
-                background: '#fff',
+                background: '#29292E',
+                color: '#fff'
             },
             widthConstraint: {
-                minimum: 100,
                 maximum: 200
             },
           
@@ -43,10 +42,9 @@ const MyGraph = ({data}) => {
                 size: 24,
                 color: '#fff'
             },
-            color: '#000',
+            color: '#1CAE84',
             
         },
-        height: '650px',
         interaction: {
             dragNodes: false
         },
@@ -56,7 +54,9 @@ const MyGraph = ({data}) => {
             centralGravity: 0,
             gravitationalConstant: -50000,
           },         
-        }
+        },
+        height: '100%',
+        width: '100%',
       };
 
      
@@ -76,6 +76,23 @@ const MyGraph = ({data}) => {
         })
       }
 
+      /* Логика:  1. фильтруем дату на наличие ключевого элемента,
+         получаем список зависимых элементов, если он есть, для каждого зависимого
+        повторяем процедуру, если нет передаем управление
+      */
+
+
+      const createGraphData = (data, rootElement) => {
+        const dependent = data.filter(el => el.object === rootElement && el.object !== el.dependentObject )
+        const nodes_list = []
+        dependent.forEach(el=>{
+          nodes_list.push(...createGraphData(data, el.dependentObject))
+          return nodes_list
+        })
+        nodes_list.push(...dependent)
+        return nodes_list
+      }
+
       const getEdgesList = (data) => {
         return data.map((el) => {
             return {
@@ -87,19 +104,19 @@ const MyGraph = ({data}) => {
       const [graph, setGraph] = useState({})
       
 
-      const nodes = getNodesList(data) 
-      const edges = getEdgesList(data)
+      const graphData = createGraphData(data, rootElement)
+      const nodes = getNodesList(graphData) 
+      const edges = getEdgesList(graphData)
       useMemo(() => setGraph({
 
         nodes: nodes,
         edges: edges
-      }), [])
+      }
+      ), [])
 
 
-
-
-  return (
-    <div>
+        return (
+    <div style={{background: '#29292E', width: '100%', height: '100%'}}>
          <Graph
       graph={graph}
       options={options}
