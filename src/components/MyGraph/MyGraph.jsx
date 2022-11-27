@@ -64,7 +64,9 @@ const MyGraph = ({data, rootElement}) => {
         
       };
 
-     
+    const events = {
+      stabilized: (e) => {setGraphIsCreated(true)},
+    }
       
 
       // Создает нужные данные из входных данных
@@ -114,8 +116,6 @@ const MyGraph = ({data, rootElement}) => {
           nodes: nodes,
           edges: edges
         })
-        setTimeout(()=>{
-          setGraphIsCreated(true)}, 3000)
       }, [])
       
 
@@ -133,6 +133,7 @@ const MyGraph = ({data, rootElement}) => {
          <Graph
           graph={graph}
           options={options}
+          events={events}
         />
     </div>
   )
