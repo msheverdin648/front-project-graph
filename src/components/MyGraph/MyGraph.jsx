@@ -60,6 +60,21 @@ const MyGraph = ({data, rootElement}) => {
       };
 
      
+      
+
+      // Создает нужные данные из входных данных
+      const createGraphData = (data, rootElement) => {
+        const dependent = data.filter(el => el.object === rootElement && el.object !== el.dependentObject )
+        const nodes_list = []
+        dependent.forEach(el=>{
+          nodes_list.push(...createGraphData(data, el.dependentObject))
+          return nodes_list
+        })
+        nodes_list.push(...dependent)
+        return nodes_list
+      }
+
+      //  Создает список узлов
       const getNodesList = (data) => {
         const objectList = data.map(el => {
             return el.object
@@ -76,23 +91,8 @@ const MyGraph = ({data, rootElement}) => {
         })
       }
 
-      /* Логика:  1. фильтруем дату на наличие ключевого элемента,
-         получаем список зависимых элементов, если он есть, для каждого зависимого
-        повторяем процедуру, если нет передаем управление
-      */
 
-
-      const createGraphData = (data, rootElement) => {
-        const dependent = data.filter(el => el.object === rootElement && el.object !== el.dependentObject )
-        const nodes_list = []
-        dependent.forEach(el=>{
-          nodes_list.push(...createGraphData(data, el.dependentObject))
-          return nodes_list
-        })
-        nodes_list.push(...dependent)
-        return nodes_list
-      }
-
+      // Создает список зависимостей между узлами
       const getEdgesList = (data) => {
         return data.map((el) => {
             return {
