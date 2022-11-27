@@ -14,7 +14,7 @@ const App = () => {
         {"object":"qwe","linkType":"qwe","dependentObject":"qwe"},
         {"object":"инсулин","linkType":"повышает","dependentObject":"ожирение"},
         {"object":"ожирение","linkType":"повышает","dependentObject":"рак"},
-        {"object":"йцукенг","linkType":"повышает","dependentObject":"йцукенг"},
+        {"object":"йцукенг","linkType":"повышает","dependentObject":"рак"},
         {"object":"рак","linkType":"повышает","dependentObject":"смерть"}
       ]
   ) 
