@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import MyGraph from './components/MyGraph/MyGraph'
+import { GraphContext } from './context'
 import './styles/App.css'
 
 const App = () => {
-  
+
+  const [zoomView, setZoomView] = useState(false)
+
+
   const [data] = useState(
       [
         {"object":"1","linkType":"1->2","dependentObject":"2", 'description': 'description 1->2'},
@@ -20,9 +24,14 @@ const App = () => {
   ) 
 
   return (
-    <div className='App'>
-      <MyGraph data={data} height={'100%'} width={'100%'} rootElement='1' />
+    <GraphContext.Provider value={{
+      zoomView,
+      setZoomView
+    }}>
+      <div className='App' onClick={e => setZoomView(false)}>
+      <MyGraph data={data} height={'600px'} width={'600px'} rootElement='1'/>
     </div>
+    </GraphContext.Provider>
   );
 
 }

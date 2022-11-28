@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import classes from './MyGraph.module.css'
 import Graph from "react-graph-vis";
 import { createGraphData, getEdgesList, getNodesList } from './MyGraphService';
 import MyGraphPopup from "./MyGraphPopup/MyGraphPopup"
+import { GraphContext } from '../../context';
 
 
-const MyGraph = ({data, rootElement, height, width }) => {
+const MyGraph = ({data, rootElement, height, width}) => {
 
 
     const [graph, setGraph] = useState({})
@@ -13,6 +14,7 @@ const MyGraph = ({data, rootElement, height, width }) => {
     const [graphData] = useState(createGraphData(data, rootElement))
     const [network, setNetwork] = useState()
     const [tooltip, setTooltip] = useState()
+    const {zoomView, setZoomView} = useContext(GraphContext)
 
     const options = {
       autoResize: false,
@@ -54,7 +56,8 @@ const MyGraph = ({data, rootElement, height, width }) => {
             
         },
         interaction: {
-            dragNodes: false
+            dragNodes: false,
+            zoomView: zoomView
         },
         physics: {
           enabled: true,
@@ -90,7 +93,10 @@ const MyGraph = ({data, rootElement, height, width }) => {
       
         return (
 
-    <div className={classes.container} style={{width: width, height: height}}>
+    <div className={classes.container} style={{width: width, height: height}} onClick={e=>{
+      e.stopPropagation()
+      setZoomView(true)
+    }}>
       {
         graphIsCreated
         ? null
@@ -106,8 +112,6 @@ const MyGraph = ({data, rootElement, height, width }) => {
         :
         null
       }
-
-
          <Graph
           graph={graph}
           options={options}
