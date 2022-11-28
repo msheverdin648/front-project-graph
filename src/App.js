@@ -6,22 +6,22 @@ const App = () => {
   
   const [data] = useState(
       [
-        {"object":"инсулин","linkType":"повышает","dependentObject":"сахар"},
-        {"object":"сахар","linkType":"повышает","dependentObject":"что-то"},
-        {"object":"инсулин","linkType":"понижает ","dependentObject":"смерть"},
-        {"object":"инсулин","linkType":"еетет","dependentObject":"йцу"},
-        {"object":"инсулин","linkType":"йцуывф","dependentObject":"йцуйцу"},
-        {"object":"qwe","linkType":"qwe","dependentObject":"qwe"},
-        {"object":"инсулин","linkType":"повышает","dependentObject":"ожирение"},
-        {"object":"ожирение","linkType":"повышает","dependentObject":"рак"},
-        {"object":"йцукенг","linkType":"повышает","dependentObject":"рак"},
-        {"object":"рак","linkType":"повышает","dependentObject":"смерть"}
+        {"object":"1","linkType":"1->2","dependentObject":"2", 'description': 'description 1->2'},
+        // {"object":"1","linkType":"1->3","dependentObject":"3"},
+        // {"object":"1","linkType":"1->4","dependentObject":"4"},
+        // {"object":"1","linkType":"1->5","dependentObject":"5"},
+        // {"object":"2","linkType":"2->6","dependentObject":"6"},
+        {"object":"2","linkType":"2->4","dependentObject":"4", 'description': 'description 2->4'},
+        // {"object":"3","linkType":"3->4","dependentObject":"4"},
+        {"object":"4","linkType":"4->7","dependentObject":"7", 'description': 'description 4->7'},
+        // {"object":"1","linkType":"Влияет на","dependentObject":"То что указано тут"},
+        // {"object":"То что указано тут","linkType":"Влияет на","dependentObject":"Вот это"},
       ]
   ) 
 
   return (
     <div className='App'>
-      <MyGraph data={data} height={'600px'} width={'600px'} rootElement='инсулин' />
+      <MyGraph data={data} height={'100%'} width={'100%'} rootElement='1' />
     </div>
   );
 

@@ -1,12 +1,18 @@
 import React, { useMemo, useState } from 'react'
 import classes from './MyGraph.module.css'
 import Graph from "react-graph-vis";
+import { createGraphData, getEdgesList, getNodesList } from './MyGraphService';
+import MyGraphPopup from "./MyGraphPopup/MyGraphPopup"
+
 
 const MyGraph = ({data, rootElement, height, width }) => {
 
 
     const [graph, setGraph] = useState({})
-    const [graphIsCreated, setGraphIsCreated] = useState(true)
+    const [graphIsCreated, setGraphIsCreated] = useState(false)
+    const [graphData] = useState(createGraphData(data, rootElement))
+    const [network, setNetwork] = useState()
+    const [tooltip, setTooltip] = useState()
 
     const options = {
       autoResize: false,
@@ -14,24 +20,23 @@ const MyGraph = ({data, rootElement, height, width }) => {
           hierarchical: {
             enabled: false,
           },
-          randomSeed: 2
+          randomSeed: 1
 
         },
         edges: {
-            color: graphIsCreated ? "#fff" : 'transparent',
+            color: graphIsCreated ? "#000" : 'transparent',
             width: 2,
             length: 400,  
             font: {
                 align: 'middle',
                 size: 18,
-                background: graphIsCreated ? "#29292E" : 'transparent',
-                color: graphIsCreated ? "#fff" : 'transparent',
+                background: graphIsCreated ? "#fff" : 'transparent',
+                color: graphIsCreated ? "#000" : 'transparent',
                 strokeWidth: 0,
             },
             widthConstraint: {
                 maximum: 200
-            },
-          
+            }, 
         },
         nodes: {
             shape: 'circle',
@@ -45,7 +50,7 @@ const MyGraph = ({data, rootElement, height, width }) => {
                 size: 24,
                 color: graphIsCreated ? "#fff" : 'transparent'
             },
-            color: graphIsCreated ? "#1CAE84" : 'transparent',
+            color: graphIsCreated ? "#000" : 'transparent',
             
         },
         interaction: {
@@ -54,7 +59,7 @@ const MyGraph = ({data, rootElement, height, width }) => {
         physics: {
           enabled: true,
           barnesHut: {
-            centralGravity: 0,
+            centralGravity: 0.5,
             gravitationalConstant: -50000,
           },         
           timestep: 3,
@@ -64,74 +69,50 @@ const MyGraph = ({data, rootElement, height, width }) => {
       };
 
     const events = {
-      stabilized: (e) => {setGraphIsCreated(true)},
+      stabilized: () => {setGraphIsCreated(true)},
+        selectEdge: (e) => {
+          const position = e.pointer.DOM
+          const edge = network.getBaseEdges(e.edges)[0]
+          const text = network.body.edges[edge].options.title
+          setTooltip(<MyGraphPopup text={text} coordinates={position}/>)
+        }, 
+        deselectEdge: (e) => {
+          setTooltip()
+        },
     }
-      
-
-      // Создает нужные данные из входных данных
-      const createGraphData = (data, rootElement) => {
-        const dependent = data.filter(el => el.object === rootElement && el.object !== el.dependentObject )
-        const nodes_list = []
-        nodes_list.push(...dependent)
-        dependent.forEach(el=>{
-          nodes_list.push(...createGraphData(data, el.dependentObject))
-          return nodes_list
-        })
-        return nodes_list
-      }
-
-      //  Создает список узлов
-      const getNodesList = (data, rootElement) => {
-        const objectList = data.map(el => {
-            return el.object
-        })
-        const dependentObjectsList = data.map(el => {
-            return el.dependentObject
-        })
-        const nodes = Array.from(new Set(objectList.concat(dependentObjectsList)))
-        
-        const result = nodes.map((el, index) => {
-            return { id: el, label: el }
-        })
-        return result.length === 0 ? [{ id: rootElement, label: rootElement }] : result
-      }
-
-
-      // Создает список зависимостей между узлами
-      const getEdgesList = (data) => {
-        return data.map((el) => {
-            return {
-                from: el.object, to: el.dependentObject, label: el.linkType
-            }
-        })
-      }
-      const graphData = createGraphData(data, rootElement)
-      const nodes = getNodesList(graphData, rootElement) 
-      const edges = getEdgesList(graphData)
       
       useMemo(() => {
         setGraph({
-          nodes: nodes,
-          edges: edges
+          nodes: getNodesList(graphData, rootElement),
+          edges: getEdgesList(graphData)
         })
       }, [])
       
-
-
         return (
+
     <div className={classes.container} style={{width: width, height: height}}>
       {
         graphIsCreated
         ? null
         : 
-         <h1 className={classes.loading}>
+         <h1 className={classes.text}>
           Загрузка
+          <span className={classes.loading}></span>
          </h1>
       }
+      {
+        tooltip
+        ? tooltip
+        :
+        null
+      }
+
+
          <Graph
           graph={graph}
           options={options}
           events={events}
+          getNetwork={item => {setNetwork(item)}}
         />
     </div>
   )
