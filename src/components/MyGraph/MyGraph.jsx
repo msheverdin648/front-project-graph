@@ -73,6 +73,7 @@ const MyGraph = ({data, rootElement, height, width}) => {
 
     const events = {
       stabilized: () => {
+        setTooltip()
         network.focus(rootElement, {
           scale: 0.1,
         })
@@ -89,6 +90,9 @@ const MyGraph = ({data, rootElement, height, width}) => {
         deselectEdge: (e) => {
           setTooltip()
         },
+        zoom: () => {
+          setTooltip()
+        }
     }
       
       useMemo(() => {
