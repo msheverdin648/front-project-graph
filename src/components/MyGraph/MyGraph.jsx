@@ -72,7 +72,12 @@ const MyGraph = ({data, rootElement, height, width}) => {
       };
 
     const events = {
-      stabilized: () => {setGraphIsCreated(true)},
+      stabilized: () => {
+        network.focus(rootElement, {
+          scale: 0.1,
+        })
+        setGraphIsCreated(true)
+      },
         selectEdge: (e) => {
           const position = e.pointer.DOM
           const edge = network.getBaseEdges(e.edges)[0]
