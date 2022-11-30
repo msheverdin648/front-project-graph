@@ -77,7 +77,9 @@ const MyGraph = ({data, rootElement, height, width}) => {
           const position = e.pointer.DOM
           const edge = network.getBaseEdges(e.edges)[0]
           const text = network.body.edges[edge].options.title
-          setTooltip(<MyGraphPopup text={text} coordinates={position}/>)
+          if (text){
+            setTooltip(<MyGraphPopup text={text} coordinates={position}/>)
+          }
         }, 
         deselectEdge: (e) => {
           setTooltip()

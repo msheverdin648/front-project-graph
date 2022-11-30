@@ -10,7 +10,7 @@ const App = () => {
 
   const [data] = useState(
       [
-        {"object":"1","linkType":"1->2","dependentObject":"2", 'description': 'description 1->2'},
+        {"object":"1","linkType":"1->2","dependentObject":"2", 'description': ''},
         // {"object":"1","linkType":"1->3","dependentObject":"3"},
         // {"object":"1","linkType":"1->4","dependentObject":"4"},
         // {"object":"1","linkType":"1->5","dependentObject":"5"},
